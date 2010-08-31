@@ -27,14 +27,16 @@ var broadcast = $('#broadcasts li:first');
 // go no further if there's no broadcast
 if (!broadcast) return;
 
-// fetch out the data
-var dstring = broadcast.find('div.date span').text();
+// fetch out the date and convert to the format (Thu Aug 26 2010)
+var dstring = broadcast.find('div.date span').text().
+  replace(/(\w{3}) (\d{1,2}) (\w{3}) (\d{4})/,'$1 $3 $2 $4');
+
 var hhmm = broadcast.find('div.time span').text().split(':');
 var thedate = Date.parse(dstring);
-console.log(thedate);
 thedate.addHours(hhmm[0]);
 thedate.addMinutes(hhmm[1]);
 thedate.addMinutes(thedate.getTimezoneOffset());
+
 var channel = services[broadcast.find('div.location a').text().split(' (')[0]];
 var url     = 'http://g.bbcredux.com/programme/'+channel+'/'+thedate.toString('yyyy-MM-d/HH-mm-00');
 console.log(url);

@@ -4,24 +4,24 @@
 
   // the dreaded lookup table
   var services = {
-    'BBC Radio 1' : 'bbcr1',
-    'BBC Radio 2' : 'bbcr2',
-    'BBC Radio 3' : 'bbcr3',
-    'BBC Radio 4' : 'bbcr4',
-    'BBC Radio 5 live' : 'bbcr5l',
-    'BBC Radio 5 live sports extra' : 'r5lsx',
-    'BBC 6 Music' : 'bbc6m',
-    'BBC Radio 7' : 'bbc7',
-    'BBC 1Xtra' : 'bbc1x',
-    'BBC Asian Network' : 'bbcan',
-    'BBC One' : 'bbcone',
-    'BBC Two' : 'bbctwo',
-    'CBeebies' : 'cbeebies',
-    'CBBC' : 'cbbc',
-    'BBC Three' : 'bbcthree',
-    'BBC Four' : 'bbcfour',
-    'BBC News Channel' : 'bbcnews24',
-    'BBC Parliament' : 'bbcparl'
+      'BBC Radio 1'       : 'bbcr1'
+    , 'BBC Radio 2'       : 'bbcr2'
+    , 'BBC Radio 3'       : 'bbcr3'
+    , 'BBC Radio 4'       : 'bbcr4'
+    , 'BBC Radio 5 live'  : 'bbcr5l'
+    , 'BBC Radio 5 live sports extra' : 'r5lsx'
+    , 'BBC 6 Music'       : 'bbc6m'
+    , 'BBC Radio 7'       : 'bbc7'
+    , 'BBC 1Xtra'         : 'bbc1x'
+    , 'BBC Asian Network' : 'bbcan'
+    , 'BBC One'           : 'bbcone'
+    , 'BBC Two'           : 'bbctwo'
+    , 'CBeebies'          : 'cbeebies'
+    , 'CBBC'              : 'cbbc'
+    , 'BBC Three'         : 'bbcthree'
+    , 'BBC Four'          : 'bbcfour'
+    , 'BBC News Channel'  : 'bbcnews24'
+    , 'BBC Parliament'    : 'bbcparl'
   };
 
   var legacy = {

@@ -1,6 +1,6 @@
 ( function () {
   
-  var DEBUG = false;
+  var DEBUG = true;
 
   // the dreaded lookup table
   var services = {
@@ -22,10 +22,27 @@
     'BBC Four' : 'bbcfour',
     'BBC News Channel' : 'bbcnews24',
     'BBC Parliament' : 'bbcparl'
-  }
+  };
+
+  var legacy = {
+      broadcast : '#broadcasts li:first'
+    , date      : 'div.date span'
+    , time      : 'div.time span'
+    , channel   : 'div.location a'
+  };
+
+  var newer = {
+      broadcast : '#programme-broadcasts li:first'
+    , date      : '.date'
+    , time      : '.time'
+    , channel   : '.service a'
+  };
+
+  // Which selectors to use
+  var selectors = newer;
 
   // fetch the first broadcast
-  var broadcast = $('#broadcasts li:first');
+  var broadcast = $(selectors.broadcast);
 
   // go no further if there's no broadcast
   if (!broadcast || broadcast.length === 0) { return; }
@@ -33,16 +50,19 @@
   if (DEBUG) { console.log('Found broadcast', broadcast, broadcast.length); }
 
   // fetch out the date and convert to the format (Thu Aug 26 2010)
-  var dstring = broadcast.find('div.date span').text().
-    replace(/(\w{3}) (\d{1,2}) (\w{3}) (\d{4})/,'$1 $3 $2 $4');
+  var dstring = broadcast.find(selectors.date)
+                         .text()
+                         .replace(/(\w{3}) (\d{1,2}) (\w{3}) (\d{4})/,'$1 $3 $2 $4');
 
-  var hhmm = broadcast.find('div.time span').text().split(':');
+  if (DEBUG) { console.log('Date:', dstring); }
+
+  var hhmm = broadcast.find(selectors.time).text().split(':');
   var thedate = Date.parse(dstring);
   thedate.addHours(hhmm[0]);
   thedate.addMinutes(hhmm[1]);
   thedate.addMinutes(thedate.getTimezoneOffset());
 
-  var channel = services[broadcast.find('div.location a').text().split(' (')[0]];
+  var channel = services[broadcast.find(selectors.channel).text().split(' (')[0]];
   var url     = 'http://g.bbcredux.com/programme/'+channel+'/'+thedate.toString('yyyy-MM-d/HH-mm-00');
   console.log(url);
 

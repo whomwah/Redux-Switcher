@@ -38,33 +38,68 @@
     , channel   : '.service a'
   };
 
-  // Which selectors to use
-  var selectors = newer;
+  var findProgramme = function findProgramme(services, selectors) {
+    
+    // fetch the first broadcast
+    var broadcast = $(selectors.broadcast);
 
-  // fetch the first broadcast
-  var broadcast = $(selectors.broadcast);
+    // go no further if there's no broadcast
+    if (!broadcast || broadcast.length === 0) { return; }
 
-  // go no further if there's no broadcast
-  if (!broadcast || broadcast.length === 0) { return; }
+    if (DEBUG) { console.log('Found broadcast', broadcast, broadcast.length); }
 
-  if (DEBUG) { console.log('Found broadcast', broadcast, broadcast.length); }
+    // fetch out the date and convert to the format (Thu Aug 26 2010)
+    var dstring = broadcast.find(selectors.date)
+                           .text()
+                           .replace(/(\w{3}) (\d{1,2}) (\w{3}) (\d{4})/,'$1 $3 $2 $4');
 
-  // fetch out the date and convert to the format (Thu Aug 26 2010)
-  var dstring = broadcast.find(selectors.date)
-                         .text()
-                         .replace(/(\w{3}) (\d{1,2}) (\w{3}) (\d{4})/,'$1 $3 $2 $4');
+    if (DEBUG) { console.log('Date:', dstring); }
 
-  if (DEBUG) { console.log('Date:', dstring); }
+    if (!dstring) { return; }
 
-  var hhmm = broadcast.find(selectors.time).text().split(':');
-  var thedate = Date.parse(dstring);
-  thedate.addHours(hhmm[0]);
-  thedate.addMinutes(hhmm[1]);
-  thedate.addMinutes(thedate.getTimezoneOffset());
+    var hhmm = broadcast.find(selectors.time).text().split(':');
 
-  var channel = services[broadcast.find(selectors.channel).text().split(' (')[0]];
-  var url     = 'http://g.bbcredux.com/programme/'+channel+'/'+thedate.toString('yyyy-MM-d/HH-mm-00');
-  console.log(url);
+    if (!hhmm) { return; }
+
+    var thedate = Date.parse(dstring);
+    thedate.addHours(hhmm[0]);
+    thedate.addMinutes(hhmm[1]);
+    thedate.addMinutes(thedate.getTimezoneOffset());
+    
+    var channel = services[broadcast.find(selectors.channel).text().split(' (')[0]];
+
+    if (!channel) { return; }
+
+    return {
+      date    : thedate,
+      channel : channel
+    };
+  }; // findProgramme
+
+  var formatReduxUrl = function formatReduxUrl(programme) {
+      var url     = 'http://g.bbcredux.com/programme/'+programme.channel+'/'+programme.date.toString('yyyy-MM-d/HH-mm-00');
+      console.log(url);  
+      return url;
+  };
+
+
+  //////
+
+  // Try using old programmes page structure
+  var programme = findProgramme(services, legacy);
+
+  // Try using new programmes structure
+  if (!programme) {
+    programme = findProgramme(services, newer);
+  }
+
+  // Give up
+  if (!programme) {
+    return;
+  }
+
+  // Create redux URL using programme structure
+  var url = formatReduxUrl(programme);
 
   // create the output
   var output = 

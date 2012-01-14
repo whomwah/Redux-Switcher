@@ -82,6 +82,22 @@
       return url;
   };
 
+  var displayUrlOnPage = function displayUrlOnPage(url) {
+    // create the output
+    var output = 
+      '<div id="more-details" class="box">' + 
+        '<h2>BBC Redux</h2>' +
+        '<div id="duration" class="box first">' + 
+          '<div class="content clearfix">' + 
+            '<div><a href="'+url+'">Switch to BBC Redux page</a></div>' + 
+          '</div>' + 
+        '</div>' + 
+     '</div>'; 
+
+    // prepend the output to the screen
+    $('div.col-b').prepend(output);
+  };
+
 
   //////
 
@@ -101,18 +117,6 @@
   // Create redux URL using programme structure
   var url = formatReduxUrl(programme);
 
-  // create the output
-  var output = 
-      '<div id="more-details" class="box">' + 
-        '<h2>BBC Redux</h2>' +
-        '<div id="duration" class="box first">' + 
-          '<div class="content clearfix">' + 
-            '<div><a href="'+url+'">Switch to BBC Redux page</a></div>' + 
-          '</div>' + 
-        '</div>' + 
-     '</div>'; 
-
-  // prepend the output to the screen
-  $('div.col-b').prepend(output);
+  displayUrlOnPage(url);
 
 })();
